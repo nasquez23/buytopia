@@ -1,5 +1,7 @@
 package org.buytopia.services.impl;
 
+import java.util.List;
+
 import org.buytopia.exceptions.NotFoundException;
 import org.buytopia.models.Order;
 import org.buytopia.repositories.OrderRepository;
@@ -16,6 +18,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Override
     public Order findOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Could not find this order."));
     }
@@ -26,8 +33,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Order order) {
-        Order orderToUpdate = orderRepository.findById(order.getId()).orElseThrow(() -> new NotFoundException("Could not find this order."));
+    public Order updateOrder(Long id, Order order) {
+        Order orderToUpdate = orderRepository.findById(id).orElseThrow(() -> new NotFoundException("Could not find this order."));
         orderToUpdate.setDate(order.getDate());
         orderToUpdate.setStatus(order.getStatus());
         orderToUpdate.setTotalAmount(order.getTotalAmount());

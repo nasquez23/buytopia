@@ -20,8 +20,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart updateCart(Cart cart) {
-        Cart cartToUpdate = cartRepository.findById(cart.getId()).orElseThrow(() -> new NotFoundException("Could not find this cart."));
+    public Cart updateCart(Long id, Cart cart) {
+        Cart cartToUpdate = cartRepository.findById(id).orElseThrow(() -> new NotFoundException("Could not find this cart."));
         cartToUpdate.setCartItems(cart.getCartItems());
         return cartRepository.save(cartToUpdate);
     }

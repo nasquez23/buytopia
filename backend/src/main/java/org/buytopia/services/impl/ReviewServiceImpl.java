@@ -25,8 +25,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review updateReview(Review review) {
-        Review reviewToUpdate = reviewRepository.findById(review.getId()).orElseThrow(() -> new NotFoundException("Could not find this review."));
+    public Review updateReview(Long id, Review review) {
+        Review reviewToUpdate = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("Could not find this review."));
         reviewToUpdate.setComment(review.getComment());
         reviewToUpdate.setDate(review.getDate());
         reviewToUpdate.setRating(review.getRating());

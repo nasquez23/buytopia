@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        User userToUpdate = userRepository.findById(user.getId()).orElseThrow(() -> new NotFoundException("Could not find this user."));
+    public User updateUser(Long id, User user) {
+        User userToUpdate = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Could not find this user."));
         userToUpdate.setName(user.getName());
         userToUpdate.setRole(user.getRole());
 
