@@ -1,12 +1,14 @@
 package org.buytopia.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.buytopia.exceptions.NotFoundException;
 import org.buytopia.models.Product;
 import org.buytopia.repositories.ProductRepository;
 import org.buytopia.services.ProductService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
+        product.setReviews(new ArrayList<>());
         return productRepository.save(product);
     }
 
