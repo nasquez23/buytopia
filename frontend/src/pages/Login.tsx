@@ -2,8 +2,9 @@ import { Button, TextField, Typography, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import SampleImage from "../assets/auth-image.png";
 import { Link } from "react-router-dom";
+import { FC } from "react";
 
-const Login = () => {
+const Login: FC = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (

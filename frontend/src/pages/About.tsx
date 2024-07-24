@@ -10,8 +10,9 @@ import {
   SupportAgent,
   VerifiedUser,
 } from "@mui/icons-material";
+import { FC } from "react";
 
-const About = () => {
+const About: FC = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   return (

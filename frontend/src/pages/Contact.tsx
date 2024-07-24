@@ -10,9 +10,10 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 
-const Contact = () => {
+const Contact: FC = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   return (

@@ -7,7 +7,7 @@ const NavLinks: FC<NavLinksProps> = ({ direction }) => {
   const [value, setValue] = useState<number>(0);
   const location = useLocation();
 
-  const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (_event: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
@@ -56,10 +56,30 @@ const NavLinks: FC<NavLinksProps> = ({ direction }) => {
         },
       }}
     >
-      <Tab label="Home" component={Link} to="/" />
-      <Tab label="Contact" component={Link} to="/contact" />
-      <Tab label="About" component={Link} to="/about" />
-      <Tab label="Sign up" component={Link} to="/signup" />
+      <Tab
+        label="Home"
+        component={Link}
+        to="/"
+        sx={{ fontFamily: "Montserrat" }}
+      />
+      <Tab
+        label="Contact"
+        component={Link}
+        to="/contact"
+        sx={{ fontFamily: "Montserrat" }}
+      />
+      <Tab
+        label="About"
+        component={Link}
+        to="/about"
+        sx={{ fontFamily: "Montserrat" }}
+      />
+      <Tab
+        label="Sign up"
+        component={Link}
+        to="/signup"
+        sx={{ fontFamily: "Montserrat" }}
+      />
     </Tabs>
   );
 };

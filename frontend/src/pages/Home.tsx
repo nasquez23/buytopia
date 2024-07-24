@@ -1,8 +1,9 @@
-const Home = () => {
-  return (
-    <div>
+import { FC } from "react"
+import Hero from "../components/Hero"
 
-    </div>
+const Home: FC = () => {
+  return (
+    <Hero />
   )
 }
 
