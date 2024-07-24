@@ -18,11 +18,16 @@ const Contact: FC = () => {
 
   return (
     <Box sx={{ mb: "10%" }}>
-      <Breadcrumbs sx={{ px: "10%", py: "5%" }}>
+      <Breadcrumbs sx={{ px: "10%", py: "5%", fontFamily: "Montserrat" }}>
         <Link to="/" style={{ textDecoration: "none", color: "#888" }}>
           Home
         </Link>
-        <Typography color="text.primary">Contact</Typography>
+        <Typography
+          color="text.primary"
+          sx={{ fontFamily: "Montserrat", fontWeight: 500 }}
+        >
+          Contact
+        </Typography>
       </Breadcrumbs>
       <Container
         sx={{
@@ -38,7 +43,14 @@ const Contact: FC = () => {
             width: isMobile ? "90%" : "33%",
           }}
         >
-          <Typography sx={{ mb: 3, fontWeight: 600, fontSize: "24px" }}>
+          <Typography
+            sx={{
+              mb: 3,
+              fontWeight: 600,
+              fontSize: "24px",
+              fontFamily: "Montserrat",
+            }}
+          >
             <Call
               sx={{
                 verticalAlign: "middle",
@@ -51,17 +63,35 @@ const Contact: FC = () => {
             />
             Call To Us
           </Typography>
-          <Typography sx={{ fontSize: "17px", fontWeight: 500 }}>
+          <Typography
+            sx={{ fontSize: "17px", fontWeight: 500, fontFamily: "Montserrat" }}
+          >
             We are available 24/7, 7 days a week
           </Typography>
-          <Typography sx={{ pb: 3, mt: 3, fontSize: "17px", fontWeight: 500 }}>
+          <Typography
+            sx={{
+              pb: 3,
+              mt: 3,
+              fontSize: "17px",
+              fontWeight: 500,
+              fontFamily: "Montserrat",
+            }}
+          >
             Phone: 123-456-7890
           </Typography>
           <Divider
             variant="middle"
             sx={{ borderBottomWidth: 3, borderBottomColor: "#c8c8c8" }}
           />
-          <Typography sx={{ mb: 3, fontWeight: 600, fontSize: "24px", pt: 3 }}>
+          <Typography
+            sx={{
+              mb: 3,
+              fontWeight: 600,
+              fontSize: "24px",
+              pt: 3,
+              fontFamily: "Montserrat",
+            }}
+          >
             <MailOutline
               sx={{
                 verticalAlign: "middle",
@@ -74,10 +104,24 @@ const Contact: FC = () => {
             />
             Write To Us
           </Typography>
-          <Typography sx={{ fontSize: "17px", fontWeight: 500, mb: 2 }}>
+          <Typography
+            sx={{
+              fontSize: "17px",
+              fontWeight: 500,
+              mb: 2,
+              fontFamily: "Montserrat",
+            }}
+          >
             Fill out our form and we will contact you within 24 hours
           </Typography>
-          <Typography sx={{ fontSize: "17px", fontWeight: 500, pb: 5 }}>
+          <Typography
+            sx={{
+              fontSize: "17px",
+              fontWeight: 500,
+              pb: 5,
+              fontFamily: "Montserrat",
+            }}
+          >
             Email: customersupport@buytopia.com
           </Typography>
         </Paper>
@@ -193,6 +237,7 @@ const Contact: FC = () => {
                   py: 2,
                   px: 5,
                   textTransform: "capitalize",
+                  fontFamily: "Montserrat",
                   fontSize: "16px",
                   backgroundColor: "#db4444",
                   "&:hover": {

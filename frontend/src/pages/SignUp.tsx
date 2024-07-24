@@ -85,7 +85,7 @@ const SignUp: FC = () => {
         >
           Create Account
         </Button>
-        <Typography sx={{ mt: 4, textAlign: "center", fontSize: "18px", color: "#888" }}>
+        <Typography sx={{ mt: 4, textAlign: "center", fontSize: "18px", color: "#888", fontFamily: "Montserrat" }}>
           Already have an account?{" "}
           <Link to="/login" style={{ color: "black" }}>
             Log In

@@ -26,7 +26,7 @@ const NavLinks: FC<NavLinksProps> = ({ direction }) => {
         setValue(3);
         break;
       default:
-        setValue(0);
+        setValue(-1);
         break;
     }
   }, [location.pathname]);
