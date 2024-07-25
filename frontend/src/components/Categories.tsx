@@ -102,11 +102,15 @@ const Categories: FC = () => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-          mt: 3
+          mt: 3,
         }}
       >
         <Typography
-          sx={{ fontSize: isMobile ? "2rem": "2.3rem", fontWeight: "bold", fontFamily: "Montserrat" }}
+          sx={{
+            fontSize: isMobile ? "2rem" : "2.3rem",
+            fontWeight: "bold",
+            fontFamily: "Montserrat",
+          }}
         >
           Browse By Category
         </Typography>
@@ -148,6 +152,7 @@ const Categories: FC = () => {
               border: 1,
               borderColor: "gray",
               borderRadius: 2,
+              transition: "all 0.3s ease-in-out",
               "&:hover": {
                 cursor: "pointer",
                 bgcolor: "#db4444",

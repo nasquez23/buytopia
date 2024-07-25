@@ -36,7 +36,10 @@ const Hero: FC = () => {
           p: 3,
         }}
       >
-        <Typography variant="h2" sx={{ mb: 2, fontFamily: "Montserrat" }}>
+        <Typography
+          variant="h2"
+          sx={{ mb: 2, fontFamily: "Montserrat", fontWeight: 500 }}
+        >
           Welcome to Buytopia
         </Typography>
         <Typography variant="h5" sx={{ fontFamily: "Montserrat" }}>
