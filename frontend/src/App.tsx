@@ -12,6 +12,9 @@ import AdminHome from "./pages/admin/AdminHome";
 import PrivateRoute from "./components/PrivateRoute";
 import { Box } from "@mui/material";
 import AdminSidebar from "./components/admin/AdminSidebar";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminUsers from "./pages/admin/AdminUsers";
 
 function App() {
   return (
@@ -23,10 +26,13 @@ function App() {
             <PrivateRoute>
               <>
                 <AdminHeader />
-                <Box sx={{display: "flex"}}>
+                <Box sx={{ display: "flex" }}>
                   <AdminSidebar />
                   <Routes>
                     <Route path="/" element={<AdminHome />} />
+                    <Route path="/products" element={<AdminProducts />} />
+                    <Route path="/orders" element={<AdminOrders />} />
+                    <Route path="/users" element={<AdminUsers />} />
                   </Routes>
                 </Box>
               </>
