@@ -7,7 +7,16 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  category: string;
+  category:
+    | "Food"
+    | "Electronics"
+    | "Books"
+    | "Clothes"
+    | "Beauty"
+    | "Home"
+    | "Sports"
+    | "Toys"
+    | "Other";
   stock: number;
 }
 
@@ -22,11 +31,24 @@ export interface Order {
   customer: string;
   date: Date;
   totalAmount: number;
-  status: string;
+  status: "Approved" | "Pending" | "Rejected";
 }
 
-export interface OrderProps {
+export interface OrderDialogProps {
   open: boolean;
   onClose: () => void;
   order: Order | null;
+}
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: "Admin" | "Customer";
+}
+
+export interface UserDialogProps {
+  open: boolean;
+  onClose: () => void;
+  user: User | null;
 }

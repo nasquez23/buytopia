@@ -32,7 +32,7 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
     name: product?.name || "",
     description: product?.description || "",
     price: product?.price || 0,
-    category: product?.category || "",
+    category: product?.category || "Other",
     stock: product?.stock || 0,
   });
 

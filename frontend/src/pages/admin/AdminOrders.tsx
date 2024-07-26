@@ -15,10 +15,10 @@ import {
 } from "@mui/material";
 import { Edit, Delete, Search, Visibility } from "@mui/icons-material";
 import OrderForm from "../../components/admin/OrderForm";
-import { Order } from "../../types/types";
 import OrderDetails from "../../components/admin/OrderDetails";
+import { Order } from "../../types/types";
 
-const SAMPLE_ORDERS = [
+const SAMPLE_ORDERS: Order[] = [
   {
     id: 1,
     customer: "John Doe",
@@ -50,7 +50,7 @@ const AdminOrders: FC = () => {
     id: 0,
     customer: "",
     totalAmount: 0,
-    status: "",
+    status: "Pending",
     date: new Date(),
   });
 

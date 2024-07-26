@@ -46,16 +46,17 @@ const SAMPLE_PRODUCTS: Product[] = [
 ];
 
 const AdminProducts: FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const [productToEdit, setProductToEdit] = useState<Product>({
+  const initialProduct: Product = {
     id: 0,
     name: "",
     price: 0,
     description: "",
-    category: "",
+    category: "Other",
     stock: 0,
-  });
+  };
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [productToEdit, setProductToEdit] = useState<Product>(initialProduct);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -72,14 +73,7 @@ const AdminProducts: FC = () => {
 
   const handleCloseForm = () => {
     setShowForm(false);
-    setProductToEdit({
-      id: 0,
-      name: "",
-      price: 0,
-      description: "",
-      category: "",
-      stock: 0,
-    });
+    setProductToEdit(initialProduct);
   };
 
   return (

@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState, useEffect } from "react";
-import { OrderProps, Order } from "../../types/types";
+import { OrderDialogProps, Order } from "../../types/types";
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
 
 const STATUS = ["Pending", "Approved", "Rejected"];
 
-const OrderForm: FC<OrderProps> = ({ open, onClose, order }) => {
+const OrderForm: FC<OrderDialogProps> = ({ open, onClose, order }) => {
   const [orderData, setOrderData] = useState<Order>({
     id: order?.id || 0,
     totalAmount: order?.totalAmount || 0,
