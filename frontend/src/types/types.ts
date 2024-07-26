@@ -16,3 +16,17 @@ export interface ProductFormProps {
   onClose: () => void;
   product: Product | null;
 }
+
+export interface Order {
+  id: number;
+  customer: string;
+  date: Date;
+  totalAmount: number;
+  status: string;
+}
+
+export interface OrderProps {
+  open: boolean;
+  onClose: () => void;
+  order: Order | null;
+}
