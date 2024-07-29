@@ -6,17 +6,18 @@ export interface Product {
   id: number;
   name: string;
   description: string;
+  image: string;
   price: number;
   category:
-    | "Food"
-    | "Electronics"
-    | "Books"
-    | "Clothes"
-    | "Beauty"
-    | "Home"
-    | "Sports"
-    | "Toys"
-    | "Other";
+    | "FOOD"
+    | "ELECTRONICS"
+    | "BOOKS"
+    | "CLOTHES"
+    | "BEAUTY"
+    | "HOME"
+    | "SPORTS"
+    | "TOYS"
+    | "OTHER";
   stock: number;
 }
 
@@ -51,4 +52,15 @@ export interface UserDialogProps {
   open: boolean;
   onClose: () => void;
   user: User | null;
+}
+
+export interface DeleteModalProps {
+  open: boolean;
+  objectId: number;
+  onClose: () => void;
+  deleteFunction: (id: number) => void;
+  title: string;
+  message: string;
+  isDeleting: boolean;
+  error: boolean;
 }

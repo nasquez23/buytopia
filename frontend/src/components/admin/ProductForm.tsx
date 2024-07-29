@@ -1,40 +1,43 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
-  InputLabel,
   MenuItem,
-  Select,
   SelectChangeEvent,
   TextField,
+  Typography,
 } from "@mui/material";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { Product, ProductFormProps } from "../../types/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addProduct, updateProduct } from "../../services/ProductService";
 
 const CATEGORIES = [
-  "Electronics",
-  "Books",
-  "Clothes",
-  "Beauty",
-  "Home",
-  "Sports",
-  "Toys",
-  "Other",
+  { value: "FOOD", label: "Food" },
+  { value: "ELECTRONICS", label: "Electronics" },
+  { value: "BOOKS", label: "Books" },
+  { value: "CLOTHES", label: "Clothes" },
+  { value: "BEAUTY", label: "Beauty" },
+  { value: "HOME", label: "Home" },
+  { value: "SPORTS", label: "Sports" },
+  { value: "TOYS", label: "Toys" },
+  { value: "OTHER", label: "Other" },
 ];
-
 const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
   const [productData, setProductData] = useState<Product>({
     id: product?.id || 0,
     name: product?.name || "",
     description: product?.description || "",
+    image: product?.image || "",
     price: product?.price || 0,
-    category: product?.category || "Other",
+    category: product?.category || "OTHER",
     stock: product?.stock || 0,
   });
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (product) setProductData(product);
@@ -51,6 +54,21 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
     });
   };
 
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: product?.id !== 0 ? updateProduct : addProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+      onClose();
+    },
+  });
+
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    mutate(productData);
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle
@@ -60,7 +78,9 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
       </DialogTitle>
       <DialogContent>
         <Box
+          onSubmit={handleSubmit}
           component="form"
+          id="product-form"
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -85,26 +105,33 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
           />
           <TextField
             required
+            label="Image"
+            name="image"
+            value={productData.image}
+            onChange={handleChange}
+          />
+          <TextField
+            required
             label="Price"
             name="price"
             value={productData.price}
             onChange={handleChange}
             type="number"
           />
-          <FormControl required>
-            <InputLabel>Category</InputLabel>
-            <Select
-              name="category"
-              value={productData.category}
-              onChange={handleChange}
-            >
-              {CATEGORIES.map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <TextField
+            required
+            select
+            name="category"
+            label="Category"
+            value={productData.category}
+            onChange={handleChange}
+          >
+            {CATEGORIES.map((category) => (
+              <MenuItem key={category.value} value={category.value}>
+                {category.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             required
             label="Stock"
@@ -115,16 +142,39 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
           />
         </Box>
       </DialogContent>
+      {isError && (
+        <Box sx={{ py: 2 }}>
+          <Typography color="error" sx={{ textAlign: "center" }}>
+            {error.message}
+          </Typography>
+        </Box>
+      )}
       <DialogActions>
-        <Button
-          onClick={onClose}
-          sx={{ color: "gray", "&:hover": { bgcolor: "#e8e8e8" } }}
-        >
-          Cancel
-        </Button>
-        <Button sx={{ color: "#db4444", "&:hover": { color: "darkred", bgcolor: "#e8e8e8" } }}>
-          Save
-        </Button>
+        {isPending ? (
+          <Box sx={{ display: "flex", mx: "auto", py: 2 }}>
+            <CircularProgress sx={{ color: "#db4444" }} />
+          </Box>
+        ) : (
+          <>
+            <Button
+              onClick={onClose}
+              type="button"
+              sx={{ color: "gray", "&:hover": { bgcolor: "#e8e8e8" } }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form="product-form"
+              sx={{
+                color: "#db4444",
+                "&:hover": { color: "darkred", bgcolor: "#e8e8e8" },
+              }}
+            >
+              Save
+            </Button>
+          </>
+        )}
       </DialogActions>
     </Dialog>
   );

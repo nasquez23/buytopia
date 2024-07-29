@@ -15,49 +15,54 @@ import AdminSidebar from "./components/admin/AdminSidebar";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/admin/*"
-          element={
-            <PrivateRoute>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateRoute>
+                <>
+                  <AdminHeader />
+                  <Box sx={{ display: "flex" }}>
+                    <AdminSidebar />
+                    <Routes>
+                      <Route path="/" element={<AdminHome />} />
+                      <Route path="/products" element={<AdminProducts />} />
+                      <Route path="/orders" element={<AdminOrders />} />
+                      <Route path="/users" element={<AdminUsers />} />
+                    </Routes>
+                  </Box>
+                </>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/*"
+            element={
               <>
-                <AdminHeader />
-                <Box sx={{ display: "flex" }}>
-                  <AdminSidebar />
-                  <Routes>
-                    <Route path="/" element={<AdminHome />} />
-                    <Route path="/products" element={<AdminProducts />} />
-                    <Route path="/orders" element={<AdminOrders />} />
-                    <Route path="/users" element={<AdminUsers />} />
-                  </Routes>
-                </Box>
+                <Header />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <Footer />
               </>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/*"
-          element={
-            <>
-              <Header />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <Footer />
-            </>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 
