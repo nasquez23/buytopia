@@ -1,15 +1,24 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { User, UserDialogProps } from "../../types/types";
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   MenuItem,
   TextField,
+  Typography,
 } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addUser, updateUser } from "../../services/UsersService";
+
+const ROLES = [
+  { value: "Admin", label: "Admin" },
+  { value: "Customer", label: "Customer" },
+];
 
 const UserForm: FC<UserDialogProps> = ({ open, onClose, user }) => {
   const [userData, setUserData] = useState<User>({
@@ -18,12 +27,32 @@ const UserForm: FC<UserDialogProps> = ({ open, onClose, user }) => {
     email: user?.email || "",
     role: user?.role || "Customer",
   });
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (user) setUserData(user);
+  }, [user]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUserData({
       ...userData,
       [event.target.name]: event.target.value,
     });
+  };
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: user?.id !== 0 ? updateUser : addUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["users"],
+      });
+      onClose();
+    },
+  });
+
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    mutate(userData);
   };
 
   return (
@@ -34,46 +63,81 @@ const UserForm: FC<UserDialogProps> = ({ open, onClose, user }) => {
         {user?.id !== 0 ? "Edit" : "Add"} User
       </DialogTitle>
       <DialogContent>
-        <Box sx={{ display: "flex", flexDirection: "column", mt: 3 }}>
+        <Box
+          onSubmit={handleSubmit}
+          component="form"
+          id="user-form"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            mt: 3,
+            width: "50vh",
+          }}
+        >
           <TextField
+            required
             label="Name"
-            variant="outlined"
             name="name"
-            value={user?.name}
+            value={userData.name}
             onChange={handleChange}
-            sx={{ mb: 2 }}
           />
           <TextField
+            required
             label="Email"
-            variant="outlined"
             name="email"
-            value={user?.email}
+            value={userData.email}
             onChange={handleChange}
-            sx={{ mb: 2 }}
           />
           <TextField
             select
+            required
             label="Role"
-            variant="outlined"
             name="role"
-            value={user?.role}
+            value={userData.role}
             onChange={handleChange}
-            sx={{ mb: 2 }}
           >
-            <MenuItem key="admin" value="Admin">
-              Admin
-            </MenuItem>
-            <MenuItem key="customer" value="Customer">
-              Customer
-            </MenuItem>
+            {ROLES.map((role) => (
+              <MenuItem key={role.value} value={role.value}>
+                {role.label}
+              </MenuItem>
+            ))}
           </TextField>
         </Box>
       </DialogContent>
+      {isError && (
+        <Box sx={{ py: 2 }}>
+          <Typography color="error" sx={{ textAlign: "center" }}>
+            {error.message}
+          </Typography>
+        </Box>
+      )}
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" sx={{ bgcolor: "#db4444", color: "white" }}>
-          {user?.id !== 0 ? "Edit" : "Add"}
-        </Button>
+        {isPending ? (
+          <Box sx={{ display: "flex", mx: "auto", py: 2 }}>
+            <CircularProgress sx={{ color: "#db4444" }} />
+          </Box>
+        ) : (
+          <>
+            <Button
+              onClick={onClose}
+              type="button"
+              sx={{ color: "gray", "&:hover": { bgcolor: "#e8e8e8" } }}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form="user-form"
+              sx={{
+                color: "#db4444",
+                "&:hover": { color: "darkred", bgcolor: "#e8e8e8" },
+              }}
+            >
+              Save
+            </Button>
+          </>
+        )}
       </DialogActions>
     </Dialog>
   );

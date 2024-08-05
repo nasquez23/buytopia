@@ -49,7 +49,11 @@ const AdminProducts: FC = () => {
     queryFn: getProducts,
   });
 
-  const { mutate: deleteProductMutate, isPending: isDeleting, isError: isErrorWhileDeleting } = useMutation({
+  const {
+    mutate: deleteProductMutate,
+    isPending: isDeleting,
+    isError: isErrorWhileDeleting,
+  } = useMutation({
     mutationFn: deleteProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -138,8 +142,17 @@ const AdminProducts: FC = () => {
             <CircularProgress sx={{ color: "#db4444" }} />
           </Box>
         ) : isError ? (
-          <Typography color="error" sx={{ textAlign: "center", fontSize: "1.5rem", py: "10%" }}>
+          <Typography
+            color="error"
+            sx={{ textAlign: "center", fontSize: "1.5rem", py: "10%" }}
+          >
             Could not load products, please try again later.
+          </Typography>
+        ) : filteredProducts.length === 0 ? (
+          <Typography
+            sx={{ textAlign: "center", fontSize: "1.5rem", py: "10%" }}
+          >
+            No products found.
           </Typography>
         ) : (
           <TableContainer component={Paper}>

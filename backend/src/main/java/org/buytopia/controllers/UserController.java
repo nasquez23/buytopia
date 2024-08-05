@@ -1,5 +1,6 @@
 package org.buytopia.controllers;
 
+import java.util.List;
 import org.buytopia.models.User;
 import org.buytopia.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,11 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    @GetMapping
+    public List<User> findAllUsers(){
+        return userService.findAllUsers();
+    }    
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id){

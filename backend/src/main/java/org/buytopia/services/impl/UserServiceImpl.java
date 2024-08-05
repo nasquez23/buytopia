@@ -1,5 +1,6 @@
 package org.buytopia.services.impl;
 
+import java.util.List;
 import org.buytopia.exceptions.NotFoundException;
 import org.buytopia.models.User;
 import org.buytopia.repositories.UserRepository;
@@ -12,6 +13,12 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override

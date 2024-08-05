@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.buytopia.exceptions.NotFoundException;
 import org.buytopia.models.Order;
+import org.buytopia.models.enums.Status;
 import org.buytopia.repositories.OrderRepository;
 import org.buytopia.services.OrderService;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order) {
+        order.setStatus(Status.PENDING);
         return orderRepository.save(order);
     }
 
