@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface NavLinksProps {
   direction: "horizontal" | "vertical";
 }
@@ -63,4 +65,25 @@ export interface DeleteModalProps {
   message: string;
   isDeleting: boolean;
   error: boolean;
+}
+
+export interface AuthRequest {
+  name?: string;
+  email: string;
+  password: string;
+}
+
+export interface NotificationProps {
+  open: boolean;
+  message: string;
+  onClose: () => void;
+  severity: "success" | "error";
+}
+
+export interface NotificationContextProps {
+  showNotification: (message: string, severity: "success" | "error") => void;
+}
+
+export interface NotificationProviderProps {
+  children: ReactNode;
 }
