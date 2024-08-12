@@ -4,6 +4,8 @@ import java.util.List;
 import org.buytopia.models.User;
 import org.buytopia.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,15 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id){
         User user = userService.findUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        User user = userService.getUserProfile(userEmail);
+
         return ResponseEntity.ok(user);
     }
 

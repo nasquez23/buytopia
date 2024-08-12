@@ -1,5 +1,6 @@
 package org.buytopia.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,5 +47,5 @@ public class Order {
     private Status status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDTO> orderItems;
+    private List<OrderDTO> orderItems = new ArrayList<>();
 }

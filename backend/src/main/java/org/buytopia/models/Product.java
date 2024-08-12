@@ -1,5 +1,6 @@
 package org.buytopia.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.buytopia.models.enums.Category;
@@ -35,5 +36,5 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 }

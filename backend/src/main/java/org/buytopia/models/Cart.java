@@ -1,7 +1,9 @@
 package org.buytopia.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.buytopia.models.dto.CartDTO;
 
 import jakarta.persistence.CascadeType;
@@ -29,8 +31,9 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartDTO> cartItems;
+    private List<CartDTO> cartItems = new ArrayList<>();
 }

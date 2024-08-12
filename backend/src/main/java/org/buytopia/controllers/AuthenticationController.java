@@ -1,8 +1,9 @@
 package org.buytopia.controllers;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.buytopia.models.User;
 import org.buytopia.models.dto.LoginRequest;
-import org.buytopia.models.dto.LoginResponse;
 import org.buytopia.models.dto.RegisterRequest;
 import org.buytopia.services.AuthenticationService;
 import org.buytopia.services.JwtService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,14 +33,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> signIn(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Void> signIn(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         User authenticatedUser = authenticationService.signIn(loginRequest);
 
         String token = jwtService.generateToken(authenticatedUser);
-        LoginResponse response = new LoginResponse();
-        response.setToken(token);
-        response.setExpiration(jwtService.getExpirationTime());
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge((int) jwtService.getExpirationTime());
+        response.addCookie(cookie);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().build();
     }
 }

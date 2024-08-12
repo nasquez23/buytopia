@@ -1,6 +1,5 @@
 package org.buytopia.services;
 
-import java.util.ArrayList;
 import org.buytopia.models.Cart;
 import org.buytopia.models.User;
 import org.buytopia.models.dto.LoginRequest;
@@ -31,9 +30,9 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setName(registerRequest.getName());
         user.setRole(Role.CUSTOMER);
-        user.setCart(new Cart());
-        user.setOrders(new ArrayList<>());
-        user.setReviews(new ArrayList<>());
+        Cart cart = new Cart();
+        cart.setUser(user);
+        user.setCart(cart);
 
         return userRepository.save(user);
     }

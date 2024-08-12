@@ -1,6 +1,5 @@
 package org.buytopia.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.buytopia.exceptions.NotFoundException;
@@ -30,7 +29,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        product.setReviews(new ArrayList<>());
         return productRepository.save(product);
     }
 

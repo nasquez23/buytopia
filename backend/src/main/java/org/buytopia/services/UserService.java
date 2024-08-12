@@ -5,6 +5,7 @@ import org.buytopia.models.User;
 
 public interface UserService {
     List<User> findAllUsers();
+    User getUserProfile(String email);
 
     User findUserById(Long id);
 

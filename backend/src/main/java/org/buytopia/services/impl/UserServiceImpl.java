@@ -1,6 +1,7 @@
 package org.buytopia.services.impl;
 
 import java.util.List;
+
 import org.buytopia.exceptions.NotFoundException;
 import org.buytopia.models.User;
 import org.buytopia.repositories.UserRepository;
@@ -19,6 +20,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserProfile(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Could not find this user."));
     }
 
     @Override
