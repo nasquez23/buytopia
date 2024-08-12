@@ -31,7 +31,6 @@ public class AuthenticationService {
         user.setName(registerRequest.getName());
         user.setRole(Role.CUSTOMER);
         Cart cart = new Cart();
-        cart.setUser(user);
         user.setCart(cart);
 
         return userRepository.save(user);

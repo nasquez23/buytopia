@@ -23,3 +23,9 @@ export const register = async ({ name, email, password }: AuthRequest) => {
     throw new Error("Failed to register");
   }
 };
+
+export const fetchUser = async () => {
+  const response = await axiosInstance.get("/users/profile");
+
+  return response.data;
+};

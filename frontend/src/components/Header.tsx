@@ -17,8 +17,10 @@ import {
 } from "@mui/icons-material";
 import Logo from "../assets/buytopia-logo.png";
 import NavLinks from "./NavLinks";
+import { useAuth } from "../hooks/useAuth";
 
 const Header: FC = () => {
+  const { data: user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -86,7 +88,14 @@ const Header: FC = () => {
           <NavLinks direction="horizontal" />
         </Box>
       )}
-      <Box sx={{ display: "flex", alignItems: "center", marginLeft: isMobile ? "25%" : "0", gap: isMobile ? "10px" : "0" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginLeft: isMobile ? "25%" : "0",
+          gap: isMobile ? "10px" : "0",
+        }}
+      >
         {!isMobile ? (
           <Input placeholder="What are you looking for?" sx={{ mr: 2 }} />
         ) : (
@@ -123,9 +132,13 @@ const Header: FC = () => {
             </Backdrop>
           </>
         )}
-        <FavoriteBorder sx={{ mr: 2 }} />
-        <ShoppingCartOutlined sx={{ mr: 2 }} />
-        <AccountCircleRounded />
+        {user && (
+          <>
+            <ShoppingCartOutlined sx={{ mr: 2 }} />
+            <AccountCircleRounded />
+            <FavoriteBorder sx={{ mr: 2 }} />
+          </>
+        )}
       </Box>
     </Box>
   );

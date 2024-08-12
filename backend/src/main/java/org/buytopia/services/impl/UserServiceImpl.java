@@ -6,6 +6,7 @@ import org.buytopia.exceptions.NotFoundException;
 import org.buytopia.models.User;
 import org.buytopia.repositories.UserRepository;
 import org.buytopia.services.UserService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserProfile(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Could not find this user."));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Could not find this user."));
     }
 
     @Override
