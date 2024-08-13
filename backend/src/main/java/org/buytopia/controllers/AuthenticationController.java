@@ -7,6 +7,7 @@ import org.buytopia.models.dto.LoginRequest;
 import org.buytopia.models.dto.RegisterRequest;
 import org.buytopia.services.AuthenticationService;
 import org.buytopia.services.JwtService;
+import org.buytopia.utils.CookieUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,9 @@ public class AuthenticationController {
         User authenticatedUser = authenticationService.signIn(loginRequest);
 
         String token = jwtService.generateToken(authenticatedUser);
+        
+        CookieUtils.clearCookie("token", response);
+
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);

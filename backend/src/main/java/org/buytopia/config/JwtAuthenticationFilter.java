@@ -2,10 +2,10 @@ package org.buytopia.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.buytopia.services.JwtService;
+import org.buytopia.utils.CookieUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,8 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(
             JwtService jwtService,
             UserDetailsService userDetailsService,
-            HandlerExceptionResolver handlerExceptionResolver
-    ) {
+            HandlerExceptionResolver handlerExceptionResolver) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.handlerExceptionResolver = handlerExceptionResolver;
@@ -40,29 +39,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            String jwt = extractTokenFromRequest(request);
+            String jwt = CookieUtils.findCookie("token", request.getCookies());
+            System.out.println(jwt);
 
             if (jwt != null) {
-                final String userEmail = jwtService.extractUsername(jwt);
+                try {
+                    if (jwtService.isTokenExpired(jwt)) {
+                        CookieUtils.clearCookie("token", response);
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        return;
+                    } else {
+                        final String userEmail = jwtService.extractUsername(jwt);
 
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-                if (userEmail != null && authentication == null) {
-                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+                        if (userEmail != null && authentication == null) {
+                            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-                    if (jwtService.isTokenValid(jwt, userDetails)) {
-                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
+                            if (jwtService.isTokenValid(jwt, userDetails)) {
+                                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                        userDetails,
+                                        null,
+                                        userDetails.getAuthorities());
 
-                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                                SecurityContextHolder.getContext().setAuthentication(authToken);
+                            }
+                        }
                     }
+                } catch (Exception e) {
+                    CookieUtils.clearCookie("token", response);
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
                 }
             }
 
@@ -71,19 +81,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
     }
-
-
-    protected String extractTokenFromRequest(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-
-        return null;
-    }
+     
 }

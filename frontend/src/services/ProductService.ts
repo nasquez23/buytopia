@@ -1,24 +1,22 @@
-import axios from "axios";
+import { axiosInstance } from "../axios/axios";
 import { Product } from "../types/types";
 
 export const getProducts = async () => {
-  const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
+  const { data } = await axiosInstance.get("/products");
 
   return data;
 };
 
 export const getProduct = async (id: number) => {
-  const { data } = await axios.get(
-    `${import.meta.env.VITE_API_URL}/products/${id}`
-  );
+  const { data } = await axiosInstance.get(`/products/${id}`);
 
   return data;
 };
 
 export const addProduct = async (product: Product) => {
   const { id, ...productWithoutId } = product;
-  const { data } = await axios.post(
-    `${import.meta.env.VITE_API_URL}/products/create`,
+  const { data } = await axiosInstance.post(
+    `/products/create`,
     productWithoutId
   );
 
@@ -26,8 +24,8 @@ export const addProduct = async (product: Product) => {
 };
 
 export const updateProduct = async (product: Product) => {
-  const { data } = await axios.put(
-    `${import.meta.env.VITE_API_URL}/products/update/${product.id}`,
+  const { data } = await axiosInstance.put(
+    `/products/update/${product.id}`,
     product
   );
 
@@ -35,9 +33,7 @@ export const updateProduct = async (product: Product) => {
 };
 
 export const deleteProduct = async (id: number) => {
-  const { data } = await axios.delete(
-    `${import.meta.env.VITE_API_URL}/products/delete/${id}`
-  );
+  const { data } = await axiosInstance.delete(`/products/delete/${id}`);
 
   return data;
 };
