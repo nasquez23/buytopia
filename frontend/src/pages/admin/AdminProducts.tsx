@@ -69,7 +69,7 @@ const AdminProducts: FC = () => {
 
   const filteredProducts =
     products?.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      product?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
 
   const handleEditProduct = (product: Product) => {

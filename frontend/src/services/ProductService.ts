@@ -14,19 +14,24 @@ export const getProduct = async (id: number) => {
 };
 
 export const addProduct = async (product: Product) => {
-  const { id, ...productWithoutId } = product;
-  const { data } = await axiosInstance.post(
-    `/products/create`,
-    productWithoutId
-  );
+  const formData = new FormData();
+  Object.entries(product).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  formData.delete("id");
+  const { data } = await axiosInstance.post(`/products/create`, formData);
 
   return data;
 };
 
 export const updateProduct = async (product: Product) => {
+  const formData = new FormData();
+  Object.entries(product).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
   const { data } = await axiosInstance.put(
     `/products/update/${product.id}`,
-    product
+    formData
   );
 
   return data;

@@ -7,11 +7,10 @@ import {
   DialogContent,
   DialogTitle,
   MenuItem,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { Product, ProductFormProps } from "../../types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProduct, updateProduct } from "../../services/ProductService";
@@ -38,20 +37,41 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
     stock: product?.stock || 0,
   });
   const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    product?.image ? (product.image as string) : null
+  );
 
   useEffect(() => {
-    if (product) setProductData(product);
+    if (product) {
+      setProductData(product);
+      setImagePreview(product.image as string);
+    }
   }, [product]);
 
   const handleChange = (
-    event:
-      | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent<string>
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setProductData({
-      ...productData,
-      [event.target.name!]: event.target.value,
-    });
+    if (
+      event.target instanceof HTMLInputElement &&
+      event.target.type === "file"
+    ) {
+      const file = event.target.files![0];
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setImagePreview(fileReader.result as string);
+        setProductData({
+          ...productData,
+          image: file,
+        });
+      };
+      fileReader.readAsDataURL(file);
+    } else {
+      setProductData({
+        ...productData,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
 
   const { mutate, isPending, isError, error } = useMutation({
@@ -105,13 +125,6 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
           />
           <TextField
             required
-            label="Image"
-            name="image"
-            value={productData.image}
-            onChange={handleChange}
-          />
-          <TextField
-            required
             label="Price"
             name="price"
             value={productData.price}
@@ -140,6 +153,29 @@ const ProductForm: FC<ProductFormProps> = ({ open, onClose, product }) => {
             onChange={handleChange}
             type="number"
           />
+          {productData.image && (
+            <img src={imagePreview as string} alt="Product Image" />
+          )}
+          <input
+            ref={fileInputRef}
+            onChange={handleChange}
+            type="file"
+            style={{ display: "none" }}
+            name="image"
+            id="image"
+          />
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            variant="contained"
+            type="button"
+            sx={{
+              width: "50%",
+              bgcolor: "#db4444",
+              "&:hover": { bgcolor: "darkred" },
+            }}
+          >
+            Select Image
+          </Button>
         </Box>
       </DialogContent>
       {isError && (
