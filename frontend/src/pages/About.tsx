@@ -17,11 +17,22 @@ const About: FC = () => {
 
   return (
     <Box>
-      <Breadcrumbs sx={{ px: "10%", py: "5%" }}>
-        <Link to="/" style={{ textDecoration: "none", color: "#888" }}>
+      <Breadcrumbs
+        sx={{
+          px: "10%",
+          py: isMobile ? "10%" : "5%",
+          fontFamily: "Montserrat",
+        }}
+      >
+        <Link to="/" style={{ textDecoration: "none", color: "darkgray" }}>
           Home
         </Link>
-        <Typography color="text.primary">About</Typography>
+        <Typography
+          color="text.primary"
+          sx={{ fontFamily: "Montserrat", fontWeight: 500 }}
+        >
+          About
+        </Typography>
       </Breadcrumbs>
       <Box sx={{ display: "flex", flexDirection: "row", mb: "10%" }}>
         <Box sx={{ width: isMobile ? "100%" : "50%", pl: "10%" }}>

@@ -18,8 +18,8 @@ const Contact: FC = () => {
 
   return (
     <Box sx={{ mb: "10%" }}>
-      <Breadcrumbs sx={{ px: "10%", py: "5%", fontFamily: "Montserrat" }}>
-        <Link to="/" style={{ textDecoration: "none", color: "#888" }}>
+      <Breadcrumbs sx={{ px: "10%", py: isMobile ? "10%" :"5%", fontFamily: "Montserrat" }}>
+        <Link to="/" style={{ textDecoration: "none", color: "darkgray" }}>
           Home
         </Link>
         <Typography
